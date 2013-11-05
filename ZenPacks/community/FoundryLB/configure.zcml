@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <configure
+        xmlns="http://namespaces.zope.org/zope"
+        xmlns:browser="http://namespaces.zope.org/browser"
+        xmlns:zcml="http://namespaces.zope.org/zcml">
+        <configure zcml:condition="installed Products.Zuul">
+
+            <include package="Products.ZenUtils.extdirect.zope" file="meta.zcml"/>
+
+
+            <!-- ZenPack Info -->
+
+            <browser:directRouter
+                name="FoundryLB_router"
+                for="*"
+                class="ZenPacks.community.FoundryLB.routers.FoundryLBRouter"
+                namespace="Zenoss.remote"
+                permission="zenoss.View"
+            />
+    
+            <adapter
+                name="FoundryLBAdapter"
+                provides="ZenPacks.community.FoundryLB.interfaces.IFoundryLBFacade"
+                for="*"
+                factory="ZenPacks.community.FoundryLB.facades.FoundryLBFacade"
+            />
+                
+            <browser:resourceDirectory
+                    name="FoundryLB"
+                    directory="resources"
+            />
+
+            <!-- Component Info -->
+            <adapter factory="ZenPacks.community.FoundryLB.info.snL4RealServerInfo"
+                for="ZenPacks.community.FoundryLB.snL4RealServer.snL4RealServer"
+                provides="ZenPacks.community.FoundryLB.interfaces.IsnL4RealServerInfo"
+            />
+    
+            <browser:viewlet
+                name="js-snL4RealServer"
+                paths="/++resource++FoundryLB/snl4realserver.js"
+                weight="10"
+                manager="Products.ZenUI3.browser.interfaces.IJavaScriptSrcManager"
+                class="Products.ZenUI3.browser.javascript.JavaScriptSrcBundleViewlet"
+                permission="zope2.Public"
+            />
+
+            <utility provides="zope.schema.interfaces.IVocabularyFactory"
+                component=".info.snL4RealServergetEventClassesVocabulary"
+                name="snL4RealServergetEventClasses"
+            />
+
+            <!-- Component Info -->
+            <adapter factory="ZenPacks.community.FoundryLB.info.snL4BindInfo"
+                for="ZenPacks.community.FoundryLB.snL4Bind.snL4Bind"
+                provides="ZenPacks.community.FoundryLB.interfaces.IsnL4BindInfo"
+            />
+    
+            <browser:viewlet
+                name="js-snL4Bind"
+                paths="/++resource++FoundryLB/snl4bind.js"
+                weight="10"
+                manager="Products.ZenUI3.browser.interfaces.IJavaScriptSrcManager"
+                class="Products.ZenUI3.browser.javascript.JavaScriptSrcBundleViewlet"
+                permission="zope2.Public"
+            />
+
+            <utility provides="zope.schema.interfaces.IVocabularyFactory"
+                component=".info.snL4BindgetEventClassesVocabulary"
+                name="snL4BindgetEventClasses"
+            />
+
+            <!-- Component Info -->
+            <adapter factory="ZenPacks.community.FoundryLB.info.snL4VirtualServerInfo"
+                for="ZenPacks.community.FoundryLB.snL4VirtualServer.snL4VirtualServer"
+                provides="ZenPacks.community.FoundryLB.interfaces.IsnL4VirtualServerInfo"
+            />
+    
+            <browser:viewlet
+                name="js-snL4VirtualServer"
+                paths="/++resource++FoundryLB/snl4virtualserver.js"
+                weight="10"
+                manager="Products.ZenUI3.browser.interfaces.IJavaScriptSrcManager"
+                class="Products.ZenUI3.browser.javascript.JavaScriptSrcBundleViewlet"
+                permission="zope2.Public"
+            />
+
+            <utility provides="zope.schema.interfaces.IVocabularyFactory"
+                component=".info.snL4VirtualServergetEventClassesVocabulary"
+                name="snL4VirtualServergetEventClasses"
+            />
+
+        </configure>
+    </configure>
+
