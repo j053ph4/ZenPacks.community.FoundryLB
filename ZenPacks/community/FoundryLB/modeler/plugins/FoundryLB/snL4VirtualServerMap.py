@@ -2,6 +2,13 @@ from Products.DataCollector.plugins.CollectorPlugin import SnmpPlugin, GetMap, G
 from Products.DataCollector.plugins.DataMaps import ObjectMap
 from ZenPacks.community.FoundryLB.Definition import *
 
+__doc__ = """snL4VirtualServerMap
+
+snL4VirtualServerMap detects Foundry Virtual Servers
+This version adds a relation to associated ip addresses (like ipinterface components).
+
+"""
+
 class snL4VirtualServerMap(SnmpPlugin):
     """
     """
@@ -51,3 +58,4 @@ class snL4VirtualServerMap(SnmpPlugin):
             rm.append(om)
         maps.append(rm)
         return maps
+

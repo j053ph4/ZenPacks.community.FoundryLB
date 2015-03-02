@@ -9,7 +9,11 @@
             return ob;
         }
     }
-
+    
+    function pass_link(ob){ 
+        return ob; 
+    }
+    
     ZC.snL4VirtualServerPanel = Ext.extend(ZC.ComponentGridPanel, {
         constructor: function(config) {
             config = Ext.applyIf(config||{}, {
@@ -62,9 +66,10 @@
                         "dataIndex": "name"
                     }, 
                     {
-                        "header": "Virtual IP", 
-                        "width": 120, 
                         "sortable": "true", 
+                        "width": 120, 
+                        "header": "Virtual IP", 
+                        "renderer": "pass_link", 
                         "id": "getVirtualIpLink", 
                         "dataIndex": "getVirtualIpLink"
                     }, 
@@ -91,7 +96,7 @@
     });
     
     Ext.reg('snL4VirtualServerPanel', ZC.snL4VirtualServerPanel);
-    ZC.registerName('snL4VirtualServer', _t('snL4 Virtual Server'), _t('snL4 VirtualServers'));
+    ZC.registerName('snL4VirtualServer', _t('L4 Virtual Server'), _t('L4 VirtualServers'));
     
     })();
 

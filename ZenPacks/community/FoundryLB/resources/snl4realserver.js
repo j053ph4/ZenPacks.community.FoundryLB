@@ -9,7 +9,11 @@
             return ob;
         }
     }
-
+    
+    function pass_link(ob){ 
+        return ob; 
+    }
+    
     ZC.snL4RealServerPanel = Ext.extend(ZC.ComponentGridPanel, {
         constructor: function(config) {
             config = Ext.applyIf(config||{}, {
@@ -62,9 +66,10 @@
                         "dataIndex": "name"
                     }, 
                     {
-                        "header": "Zenoss Device", 
-                        "width": 120, 
                         "sortable": "true", 
+                        "width": 120, 
+                        "header": "Zenoss Device", 
+                        "renderer": "pass_link", 
                         "id": "getRealdeviceLink", 
                         "dataIndex": "getRealdeviceLink"
                     }, 
@@ -91,7 +96,7 @@
     });
     
     Ext.reg('snL4RealServerPanel', ZC.snL4RealServerPanel);
-    ZC.registerName('snL4RealServer', _t('snL4 Real Server'), _t('snL4 Real Servers'));
+    ZC.registerName('snL4RealServer', _t('L4 Real Server'), _t('L4 Real Servers'));
     
     })();
 

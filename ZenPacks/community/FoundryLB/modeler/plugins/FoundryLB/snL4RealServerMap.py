@@ -2,6 +2,13 @@ from Products.DataCollector.plugins.CollectorPlugin import SnmpPlugin, GetMap, G
 from Products.DataCollector.plugins.DataMaps import ObjectMap
 from ZenPacks.community.FoundryLB.Definition import *
 
+__doc__ = """snL4RealServerMap
+
+snL4RealServerMap detects Foundry Real Servers
+This version adds a relation to associated devices.
+
+"""
+
 class snL4RealServerMap(SnmpPlugin):
     """
     """

@@ -9,12 +9,12 @@
                 var menuButton = Ext.getCmp('component-add-menu');
                 menuButton.menuItems.push({
                     xtype: 'menuitem',
-                    text: _t('Add snL4 Virtual Server') + '...',
+                    text: _t('Add L4 Virtual Server') + '...',
                     hidden: Zenoss.Security.doesNotHavePermission('Manage Device'),
                     handler: function() {
                         var win = new Zenoss.dialog.CloseDialog({
                             width: 300,
-                            title: _t('Add snL4 Virtual Server'),
+                            title: _t('Add L4 Virtual Server'),
                             items: [{
                                 xtype: 'form',
                                 buttonAlign: 'left',
@@ -37,7 +37,7 @@
                                         function(response) {
                                             if (response.success) {
                                                 new Zenoss.dialog.SimpleMessageDialog({
-                                                    title: _t('snL4 Virtual Server Added'),
+                                                    title: _t('L4 Virtual Server Added'),
                                                     message: response.msg,
                                                     buttons: [{
                                                         xtype: 'DialogButton',

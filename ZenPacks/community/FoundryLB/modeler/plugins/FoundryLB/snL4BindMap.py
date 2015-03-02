@@ -2,6 +2,14 @@ from Products.DataCollector.plugins.CollectorPlugin import SnmpPlugin, GetMap, G
 from Products.DataCollector.plugins.DataMaps import ObjectMap
 from ZenPacks.community.FoundryLB.Definition import *
 
+__doc__ = """snL4BindMap
+
+snL4BindMap detects Foundry Real Server to Virtual Server Binds
+This version adds a relation to associated realservers, virtualservers, and ipservices.
+
+"""
+
+
 SERVERSTATEMAP = {'serverdisabled': 0,
                   #'serverenabled': 1,
                   'serverfailed': 2,
@@ -47,52 +55,52 @@ class snL4BindMap(SnmpPlugin):
             '.3': 'snL4BindVirtualPortNumber',
             '.4': 'snL4BindRealServerName',
             '.5': 'snL4BindRealPortNumber',
-            '.6': 'snL4BindRowStatus',
+            #'.6': 'snL4BindRowStatus',
             }),
         # map of real servers:
         GetTableMap('snL4RealServerEntry', '.1.3.6.1.4.1.1991.1.1.4.3.1.1', {
-            '.1': 'snL4RealServerIndex',
+            #'.1': 'snL4RealServerIndex',
             '.2': 'snL4RealServerName',
             '.3': 'snL4RealServerIP',
             '.4': 'snL4RealServerAdminStatus',
             }),
         # map of real server  status:
         GetTableMap('snL4RealServerStatusEntry', '.1.3.6.1.4.1.1991.1.1.4.8.1.1', {
-            '.1': 'snL4RealServerStatusIndex',
+            #'.1': 'snL4RealServerStatusIndex',
             '.2': 'snL4RealServerStatusName',
-            '.3': 'snL4RealServerStatusRealIP',
+            #'.3': 'snL4RealServerStatusRealIP',
             '.9': 'snL4RealServerStatusState',
             }),  
         # map of virtual servers:
         GetTableMap('snL4VirtualServerTable', '.1.3.6.1.4.1.1991.1.1.4.2.1.1', {
-            '.1': 'snL4VirtualServerIndex',
+            #'.1': 'snL4VirtualServerIndex',
             '.2': 'snL4VirtualServerName',
             '.3': 'snL4VirtualServerVirtualIP',
             '.4': 'snL4VirtualServerAdminStatus',
-            '.5': 'snL4VirtualServerSDAType',
-            '.6': 'snL4VirtualServerRowStatus',
+            #'.5': 'snL4VirtualServerSDAType',
+            #'.6': 'snL4VirtualServerRowStatus',
             }),
         # map of real server ports:
         GetTableMap('snL4RealServerPortEntry', '.1.3.6.1.4.1.1991.1.1.4.5.1.1', {
-            '.1': 'snL4RealServerPortIndex',
+            #'.1': 'snL4RealServerPortIndex',
             '.2': 'snL4RealServerPortServerName',
             '.3': 'snL4RealServerPortPort',
             '.4': 'snL4RealServerPortAdminStatus',
             }),
         # map of real server port status:
         GetTableMap('snL4RealServerPortStatusEntry', '.1.3.6.1.4.1.1991.1.1.4.10.1.1', {
-            '.1': 'snL4RealServerPortStatusIndex',
+            #'.1': 'snL4RealServerPortStatusIndex',
             '.2': 'snL4RealServerPortStatusPort',
             '.3': 'snL4RealServerPortStatusServerName',
             '.5': 'snL4RealServerPortStatusState',
             }),        
         # map of virtual server ports:
         GetTableMap('snL4VirtualServerPortEntry', '.1.3.6.1.4.1.1991.1.1.4.4.1.1', {
-            '.1': 'snL4VirtualServerPortIndex',
+            #'.1': 'snL4VirtualServerPortIndex',
             '.2': 'snL4VirtualServerPortServerName',
             '.3': 'snL4VirtualServerPortPort',
             '.4': 'snL4VirtualServerPortAdminStatus',
-            '.5': 'snL4VirtualServerPortSticky',
+            #'.5': 'snL4VirtualServerPortSticky',
             }),
         )
     
@@ -143,6 +151,32 @@ class snL4BindMap(SnmpPlugin):
         rm = self.relMap()
         trunktable = tabledata.get(self.snmpTableName)
         for trunk in trunktable.values():
+            try: trunk.pop('snL4RealServerPortPort')
+            except:  pass
+            try: trunk.pop('snL4RealServerPortServerName')
+            except:  pass
+            try: trunk.pop('snL4RealServerPortStatusPort')
+            except:  pass
+            try: trunk.pop('snL4RealServerPortStatusServerName')
+            except:  pass
+            try: trunk.pop('snL4RealServerPortStatusState')
+            except:  pass
+            try: trunk.pop('snL4RealServerStatusName')
+            except:  pass
+            try: trunk.pop('snL4RealServerStatusState')
+            except:  pass
+            try: trunk.pop('snL4VirtualServerName')
+            except:  pass
+            try: trunk.pop('snL4VirtualServerPortPort')
+            except:  pass
+            try: trunk.pop('snL4VirtualServerPortServerName')
+            except:  pass
+            enabled = True
+            for s in ['snL4RealServerAdminStatus', 'snL4VirtualServerAdminStatus', 'snL4RealServerPortAdminStatus', 'snL4VirtualServerPortAdminStatus']:
+                if s in trunk.keys():
+                    if trunk[s] == 0:  
+                        enabled = False
+                    trunk.pop(s)
             om = self.objectMap(trunk)
             name = "%s_%s_%s_%s" % (om.snL4BindVirtualServerName, om.snL4BindVirtualPortNumber, 
                                     om.snL4BindRealServerName, om.snL4BindRealPortNumber)
@@ -153,13 +187,15 @@ class snL4BindMap(SnmpPlugin):
             om.snmpindex = getattr(om, 'snL4BindIndex')
             om.setRealserver = om.snL4BindRealServerName
             om.setVirtualserver = om.snL4BindVirtualServerName
-            om.setIpservice = om.snL4BindRealPortNumber
-            statuses = ['snL4RealServerAdminStatus', 'snL4VirtualServerAdminStatus',
-                        'snL4RealServerPortAdminStatus', 'snL4VirtualServerPortAdminStatus']
-            for s in statuses:
-                if getattr(om, s) == 0: om.monitor = False
-            if getattr(om,'snL4RealServerStatusState') in SERVERSTATEMAP.values():  om.monitor = False
-            if getattr(om,'snL4RealServerPortStatusState') in PORTSTATEMAP.values():  om.monitor = False
+            #om.setIpservice = om.snL4BindRealPortNumber
+            try:
+                if getattr(om,'snL4RealServerStatusState') in SERVERSTATEMAP.values():  om.monitor = False
+            except:  pass
+            try:
+                if getattr(om,'snL4RealServerPortStatusState') in PORTSTATEMAP.values():  om.monitor = False
+            except:  pass
             rm.append(om)
+            log.debug(om)
         maps.append(rm)
         return maps
+

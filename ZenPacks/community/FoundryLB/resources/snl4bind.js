@@ -9,7 +9,11 @@
             return ob;
         }
     }
-
+    
+    function pass_link(ob){ 
+        return ob; 
+    }
+    
     ZC.snL4BindPanel = Ext.extend(ZC.ComponentGridPanel, {
         constructor: function(config) {
             config = Ext.applyIf(config||{}, {
@@ -74,37 +78,42 @@
                         "dataIndex": "name"
                     }, 
                     {
-                        "header": "IP Service", 
-                        "width": 120, 
                         "sortable": "true", 
+                        "width": 120, 
+                        "header": "IP Service", 
+                        "renderer": "pass_link", 
                         "id": "getIpserviceLink", 
                         "dataIndex": "getIpserviceLink"
                     }, 
                     {
-                        "header": "Real Server", 
-                        "width": 120, 
                         "sortable": "true", 
+                        "width": 120, 
+                        "header": "Real Server", 
+                        "renderer": "pass_link", 
                         "id": "getRealserverLink", 
                         "dataIndex": "getRealserverLink"
                     }, 
                     {
-                        "header": "Virtual Server", 
-                        "width": 120, 
                         "sortable": "true", 
+                        "width": 120, 
+                        "header": "Virtual Server", 
+                        "renderer": "pass_link", 
                         "id": "getVirtualserverLink", 
                         "dataIndex": "getVirtualserverLink"
                     }, 
                     {
-                        "header": "Real Port", 
-                        "width": 120, 
                         "sortable": "true", 
+                        "width": 120, 
+                        "header": "Real Port", 
+                        "renderer": "pass_link", 
                         "id": "snL4BindRealPortNumber", 
                         "dataIndex": "snL4BindRealPortNumber"
                     }, 
                     {
-                        "header": "Virtual Port", 
-                        "width": 120, 
                         "sortable": "true", 
+                        "width": 120, 
+                        "header": "Virtual Port", 
+                        "renderer": "pass_link", 
                         "id": "snL4BindVirtualPortNumber", 
                         "dataIndex": "snL4BindVirtualPortNumber"
                     }, 
@@ -131,7 +140,7 @@
     });
     
     Ext.reg('snL4BindPanel', ZC.snL4BindPanel);
-    ZC.registerName('snL4Bind', _t('snL4 Bind'), _t('snL4 Binds'));
+    ZC.registerName('snL4Bind', _t('L4 Bind'), _t('L4 Binds'));
     
     })();
 
