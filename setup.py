@@ -5,7 +5,7 @@
 NAME = "ZenPacks.community.FoundryLB"
 VERSION = "1.5"
 AUTHOR = "Joseph Anderson"
-LICENSE = "GPLv2+"
+LICENSE = "Apache"
 NAMESPACE_PACKAGES = ['ZenPacks', 'ZenPacks.community']
 PACKAGES = ['ZenPacks', 'ZenPacks.community', 'ZenPacks.community.FoundryLB']
 INSTALL_REQUIRES = ['ZenPacks.community.FoundryMonitor', 'ZenPacks.community.ConstructionKit']
